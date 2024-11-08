@@ -1,4 +1,4 @@
-name: IPQ60XX-NOWIFI-MINI
+name: IPQ60XX-24.10(NOWIFI)
 
 on:
   workflow_dispatch:
@@ -7,14 +7,14 @@ on:
 
 env:
   REPO_URL: https://github.com/LiBwrt-op/openwrt-6.x.git
-  REPO_BRANCH: main
+  REPO_BRANCH: openwrt-24.10
   CONFIG_FILE: configs/ipq60xx-nowifi-mini.config
   DIY_SCRIPT: diy-mini.sh
   CLASH_KERNEL: amd64
   CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
-  FIRMWARE_TAG: IPQ60XX-NOWIFI-MINI
+  FIRMWARE_TAG: IPQ60XX-24.10(NOWIFI)
   TZ: Asia/Shanghai
 
 jobs:
@@ -63,7 +63,7 @@ jobs:
     - name: Clone Source Code(克隆源代码)
       run: |
         df -hT $GITHUB_WORKSPACE
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        git clone --depth 1 -b $REPO_BRANCH $REPO_URL openwrt
         cd openwrt
         echo "OPENWRT_PATH=$PWD" >> $GITHUB_ENV
         VERSION_INFO=$(git show -s --date=short --format="作者: %an<br/>时间: %cd<br/>内容: %s<br/>hash: %H")
@@ -158,8 +158,8 @@ jobs:
         artifacts: ${{ env.FIRMWARE_PATH }}/*
         body: |
           **This is OpenWrt Firmware for ${{ env.FIRMWARE_TAG }}**
-          ### 📒 精简固件信息(无WIFI)
-          - 无WIFI带有线NSS的6.6内核
+          ### 📒 版本24.10精简固件(NOWIFI)
+          - 这是NOWIFI，带NSS的6.6内核固件
           - 只包含: luci-app-cpufreq=y luci-app-ttyd=y luci-app-upnp=y luci-theme-argon
           - 💻 这是 ${{ env.FIRMWARE_TAG }} 平台使用的 OpenWrt 固件
           - ⚽ 固件源码: ${{ env.REPO_URL }}
